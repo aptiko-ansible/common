@@ -1,0 +1,42 @@
+---
+- name: Install locales
+  locale_gen: name={{ item }} state=present
+  with_items:
+    - en_US.UTF-8
+    - en_DK.UTF-8
+
+# SSH keys
+
+- name: Create /root/.ssh
+  file: state=directory dest=/root/.ssh
+
+- name: Install ssh public key
+  copy: content="{{ ssh_pub_key }}\n" dest=/root/.ssh/id_rsa.pub
+
+- name: Install ssh private key
+  copy: content="{{ ssh_priv_key }}" dest=/root/.ssh/id_rsa mode=600
+
+
+# Firewall
+
+- name: Install ufw
+  apt: name=ufw
+
+- name: Allow ssh through firewall
+  ufw: proto=tcp port=22 rule=allow
+
+- name: Set ufw policy
+  ufw: state=enabled direction=incoming policy=deny
+
+
+- name: Install sudo
+  apt: name=sudo
+
+- name: Make sure we have pip
+  apt: name=python-pip
+
+- name: Install common SSL certificates
+  apt: name=ca-certificates
+
+- name: Install ntp
+  apt: name=ntp
