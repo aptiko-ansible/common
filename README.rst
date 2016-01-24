@@ -8,20 +8,24 @@ Overview
 This is an Ansible role for applying common configuration to all Debian
 machines. It installs sudo, ntp, pip and ca-certificates, generates
 locales en_US.UTF-8 and en_DK.UTF-8, configures firewall to deny all but
-allow port 22 (additional allows can be specified by other roles), and
-installs the root ssh keys.
+allow port 22 (additional allows can be specified by other roles), 
+installs the root ssh keys and authorized keys, configures ssh to allow
+root to login without password, and sets some options for root's shell
+in ``.profile`` and ``.bashrc``.
 
 Variables
 =========
 
 - ``ssh_pub_key``, ``ssh_priv_key``: Root's ssh keys.
+- ``root_authorized_keys``: A list of strings. Any other keys are
+  removed from root's authorized_keys.
 
 Meta
 ====
 
 Written by Antonis Christofides
 
-| Copyright (C) 2014-2015 Antonis Christofides
+| Copyright (C) 2014-2016 Antonis Christofides
 | Copyright (C) 2015 National Technical University of Athens
 
 This program is free software: you can redistribute it and/or modify

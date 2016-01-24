@@ -14,8 +14,28 @@
   copy: content="{{ ssh_pub_key }}\n" dest=/root/.ssh/id_rsa.pub
 
 - name: Install ssh private key
-  copy: content="{{ ssh_priv_key }}" dest=/root/.ssh/id_rsa mode=600
+  copy: content="{{ ssh_priv_key }}\n" dest=/root/.ssh/id_rsa mode=600
 
+- name: Setup root authorized keys
+  authorized_key:
+    user: root
+    exclusive: true
+    key: "{% for key in root_authorized_keys %}{{ key }}\n{% endfor %}"
+
+- name: Allow root to ssh without password
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: ^PermitRootLogin
+    line: PermitRootLogin without-password
+  notify: Restart ssh
+
+# Root .bashrc and .profile
+
+- name: Install bashrc for root
+  copy: src=bashrc dest=/root/.bashrc
+
+- name: Install profile for root
+  copy: src=profile dest=/root/.profile
 
 # Firewall
 
