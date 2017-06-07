@@ -16,9 +16,12 @@ in ``.profile`` and ``.bashrc``.
 Variables
 =========
 
-- ``ssh_pub_key``, ``ssh_priv_key``: Root's ssh keys.
-- ``root_authorized_keys``: A list of strings. Any other keys are
-  removed from root's authorized_keys.
+- ``ssh_pub_key``, ``ssh_priv_key``: Optional. Root's ssh keys.
+- ``root_authorized_keys``: Optional. A list of strings. Any other keys
+  are removed from root's authorized_keys. If unspecified, the root's
+  authorized keys are not touched.
+- ``command_line_editing_mode``: Optional. Set it to "vi" to enable vi
+  editing mode in bash.
 
 Meta
 ====

@@ -12,15 +12,18 @@
 
 - name: Install ssh public key
   copy: content="{{ ssh_pub_key }}\n" dest=/root/.ssh/id_rsa.pub
+  when: "{{ ssh_pub_key|default(False) }}"
 
 - name: Install ssh private key
   copy: content="{{ ssh_priv_key }}\n" dest=/root/.ssh/id_rsa mode=600
+  when: "{{ ssh_priv_key|default(False) }}"
 
 - name: Setup root authorized keys
   authorized_key:
     user: root
     exclusive: true
     key: "{% for key in root_authorized_keys %}{{ key }}\n{% endfor %}"
+  when: "{{ root_authorized_keys|default(False) }}"
 
 - name: Allow root to ssh without password
   lineinfile:
@@ -32,7 +35,7 @@
 # Root .bashrc and .profile
 
 - name: Install bashrc for root
-  copy: src=bashrc dest=/root/.bashrc
+  template: src=bashrc.j2 dest=/root/.bashrc
 
 - name: Install profile for root
   copy: src=profile dest=/root/.profile

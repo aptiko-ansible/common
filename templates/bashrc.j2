@@ -2,7 +2,9 @@ if [ -f /etc/bash.bashrc ]; then
 	. /etc/bash.bashrc
 fi
 if tty -s; then
-    set -o vi
+    {% if command_line_editing_mode|default(False) %}
+    set -o command_line_editing_mode
+    {% endif %}
     red=$(tput setaf 1)
     green=$(tput setaf 2)
     blue=$(tput setaf 4)
