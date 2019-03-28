@@ -3,7 +3,7 @@ if [ -f /etc/bash.bashrc ]; then
 fi
 if tty -s; then
     {% if command_line_editing_mode|default(False) %}
-    set -o command_line_editing_mode
+    set -o {{command_line_editing_mode}}
     {% endif %}
     red=$(tput setaf 1)
     green=$(tput setaf 2)
