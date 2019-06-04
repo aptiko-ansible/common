@@ -40,16 +40,36 @@
 - name: Install profile for root
   copy: src=profile dest=/root/.profile
 
+
 # Firewall
 
-- name: Install ufw
-  apt: name=ufw
+- name: Uninstall ufw
+  apt: name=ufw state=absent
 
-- name: Allow ssh through firewall
-  ufw: proto=tcp port=22 rule=allow
+- name: Install ferm
+  apt: name=ferm
 
-- name: Set ufw policy
-  ufw: state=enabled direction=incoming policy=deny
+- name: Start ferm at boot
+  lineinfile:
+    path: "/etc/default/ferm"
+    regexp: "^ENABLED="
+    line: 'ENABLED="yes"'
+
+- name: Set ferm.conf
+  template: src=ferm.conf dest=/etc/ferm/ferm.conf
+  notify: Reload ferm
+
+- name: Create file /etc/ferm/ansible-early
+  copy:
+    dest: /etc/ferm/ansible-early
+    force: no
+    content: ""
+
+- name: Create file /etc/ferm/ansible-late
+  copy:
+    dest: /etc/ferm/ansible-late
+    force: no
+    content: ""
 
 
 - name: Install sudo
