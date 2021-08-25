@@ -75,9 +75,6 @@
 - name: Install sudo
   apt: name=sudo
 
-- name: Make sure we have pip
-  apt: name=python-pip
-
 - name: Install common SSL certificates
   apt: name=ca-certificates
 
