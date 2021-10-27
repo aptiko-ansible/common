@@ -1,4 +1,13 @@
 ---
+- name: Install common apt packages
+  apt:
+    name:
+      - ferm
+      - sudo
+      - ca-certificates
+      - ntp
+      - debian-goodies
+
 - name: Install locales
   locale_gen: name={{ item }} state=present
   with_items:
@@ -46,9 +55,6 @@
 - name: Uninstall ufw
   apt: name=ufw state=absent
 
-- name: Install ferm
-  apt: name=ferm
-
 - name: Start ferm at boot
   lineinfile:
     path: "/etc/default/ferm"
@@ -70,16 +76,3 @@
     dest: /etc/ferm/ansible-late
     force: no
     content: ""
-
-
-- name: Install sudo
-  apt: name=sudo
-
-- name: Install common SSL certificates
-  apt: name=ca-certificates
-
-- name: Install ntp
-  apt: name=ntp
-
-- name: Install debian-goodies
-  apt: name=debian-goodies
