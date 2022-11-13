@@ -58,8 +58,9 @@ Meta
 
 Written by Antonis Christofides
 
-| Copyright (C) 2014-2016 Antonis Christofides
+| Copyright (C) 2022 IRMASYS
 | Copyright (C) 2015-2019 National Technical University of Athens
+| Copyright (C) 2014-2016 Antonis Christofides
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

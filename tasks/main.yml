@@ -1,4 +1,26 @@
 ---
+- name: Check if we are running on a new server
+  stat:
+    path: /etc/ferm/ansible-early
+  register: stat_result
+
+- name: Update and upgrade if this is a new server
+  apt:
+    update_cache: yes
+    upgrade: yes
+  when: not stat_result.stat.exists
+
+- name: Restart if this is a new server
+  reboot:
+  when: not stat_result.stat.exists
+
+- name: Uninstall packages we don't want
+  apt:
+    name:
+      - unattended-upgrades
+      - ufw
+    state: absent
+
 - name: Install common apt packages
   apt:
     name:
@@ -52,9 +74,6 @@
 
 
 # Firewall
-
-- name: Uninstall ufw
-  apt: name=ufw state=absent
 
 - name: Start ferm at boot
   lineinfile:
